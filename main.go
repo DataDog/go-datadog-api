@@ -13,7 +13,7 @@ import "net/http"
 // Client is the object that handles talking to the Datadog API. This maintains
 // state information for a particular application connection.
 type Client struct {
-	apiKey, appKey string
+	apiKey, appKey, endpoint string
 
 	//The Http Client that is used to make requests
 	HttpClient *http.Client
@@ -27,6 +27,12 @@ func NewClient(apiKey, appKey string) *Client {
 		appKey:     appKey,
 		HttpClient: http.DefaultClient,
 	}
+}
+
+// SetEndpoint sets the API URL. Defaults to null, which will then fallback
+// to the environment variable `"DATADOG_HOST"`.
+func (c *Client) SetEndpoint(endpoint string) {
+	c.endpoint = endpoint
 }
 
 // SetKeys changes the value of apiKey and appKey.

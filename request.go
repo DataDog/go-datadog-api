@@ -26,9 +26,12 @@ import (
 // uriForAPI is to be called with something like "/v1/events" and it will give
 // the proper request URI to be posted to.
 func (self *Client) uriForAPI(api string) string {
-	url := os.Getenv("DATADOG_HOST")
+	url := self.endpoint
 	if url == "" {
-		url = "https://app.datadoghq.com"
+		url := os.Getenv("DATADOG_HOST")
+		if url == "" {
+			url = "https://app.datadoghq.com"
+		}
 	}
 	if strings.Index(api, "?") > -1 {
 		return url + "/api" + api + "&api_key=" +
